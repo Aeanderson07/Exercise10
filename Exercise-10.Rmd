@@ -11,11 +11,11 @@ packages<-c("cowplot","dismo","leaflet","mapdata","OpenStreetMap","rasterVis","r
 sapply(packages, library, character.only=T)
 ```
 
-## R Markdown
+## Squirrels, Squirrels, Squirrels
 
-This is an R Markdown document. Markdown is a simple formatting syntax for authoring HTML, PDF, and MS Word documents. For more details on using R Markdown see <http://rmarkdown.rstudio.com>.
+Southwestern Red Squirrel
 
-When you click the **Knit** button a document will be generated that includes both content as well as the output of any embedded R code chunks within the document. You can embed an R code chunk like this:
+![](images/tamiasciurushudsonicus.jpg)
 
 ```{r cars}
 tafr.dismo <- gbif("tamiasciurus ", species = "fremonti", ext = c(-115, -108, 28, 38),
@@ -23,7 +23,7 @@ tafr.dismo <- gbif("tamiasciurus ", species = "fremonti", ext = c(-115, -108, 28
 
 ```
 
-```{r dismo}
+```{r dismo, fig.height=8, fig.width=8}
 US<- map_data("state")
 
 ggplot() +
@@ -39,9 +39,11 @@ ggplot() +
         panel.background = element_rect(fill = "lightblue"))
 ```
 
-## Including Plots
+## Here Comes the Floof
 
-You can also embed plots, for example:
+Adding in data points from Abert's Squirrel. Which look nothing like the other squirrel but have cool floof.
+
+![](images/abertsquirrelnps1.jpg)
 
 ```{r gbif, echo=FALSE}
 tafr.rgbif <- occ_data(scientificName = "Tamiasciurus fremonti",
@@ -72,6 +74,7 @@ colnames(tafr.rgbif.df) <- c("species","y","x","state","location")
 colnames(scia.rgbif.df) <- c("species","y","x","state","location")
 ```
 
+## Using rgbif to Make a Multiple Species Map
 
 ```{r gbif plot}
 ggplot() +
@@ -90,6 +93,10 @@ ggplot() +
         panel.background = element_rect(fill = "lightblue"))
 ```
 
+Adding the Abert's squirrel made me want to do a leaflet on them, just because their range is more interesting.
+
+![](images/Abert.jpg)
+
 ```{r leaflet}
 colors <- colorFactor(c("#F8766D","#00BA38","#619CFF"), scia.rgbif.df$state)
 
@@ -107,6 +114,14 @@ leaflet(scia.rgbif.df) %>%
              toggleDisplay = FALSE) %>%
   addScaleBar(position = "bottomright")
 ```
+
+![](images/abertssquirrelmap.jpg)
+
+This is their current range map
+
+## Adding the bioclim Data and Back to the Southwestern Red Squirrel
+
+![](images/download.jpg)
 
 ```{r bioclim data}
 bioclim <- getData(name = "worldclim", res = 2.5, var = "bio", path = "./")
@@ -130,6 +145,7 @@ presence.model <- dismo::predict(object = bioclim.model,
                                  x = bioclim.extent, 
                                  ext = bio.extent)
 ```
+
 ```{r leaflet with raster}
 colors <- c("brown","yellow","darkgreen")
 
@@ -148,5 +164,3 @@ leaflet() %>%
              toggleDisplay = FALSE) %>%
   addScaleBar(position = "bottomright")
 ```
-
-Note that the `echo = FALSE` parameter was added to the code chunk to prevent printing of the R code that generated the plot.
